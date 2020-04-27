@@ -10,19 +10,14 @@ import {
 } from '../components';
 import { Props, RootStackParamList } from '../types';
 
-export function HomeScreen({ navigation, route }: Props) {
-  const pressButton = () => {
-    navigation.navigate('IbuCalculator');
-    console.log(route.key);
-  };
-
+export function HomeScreen({ navigation }: Props) {
   return (
     <StyledView>
       <StyledCard>
-        <StyledButton onPress={() => pressButton()}>
+        <StyledButton onPress={() => navigation.navigate('AbvCalculator')}>
           <StyledText>Caluladora de ABV</StyledText>
         </StyledButton>
-        <StyledButton onPress={() => pressButton()}>
+        <StyledButton onPress={() => navigation.navigate('IbuCalculator')}>
           <StyledText>Calculadora de IBU</StyledText>
         </StyledButton>
       </StyledCard>
