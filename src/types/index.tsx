@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+export * from './HopCardProps';
 
 export type RootStackParamList = {
   Home: undefined;

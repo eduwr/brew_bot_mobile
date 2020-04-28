@@ -1,68 +1,72 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, SetStateAction, Dispatch } from 'react';
 import { Text, View } from 'react-native';
-import {
-  StyledButton,
-  StyledView,
-  StyledCard,
-  Title,
-  StyledInput,
-  HopCard
-} from '../components';
+import { StyledButton, StyledInput, StyledCard, HopCard } from '../components';
 import { Props } from '../types';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export function IbuCalculator({ navigation }: Props) {
-  const [endVolume, setEndVolume] = useState('');
-  const [originalGravity, setOriginalGravity] = useState('');
-  const [weight, setWeight] = useState('');
-  const [alphaAcid, setAlphaAcid] = useState('');
-  const [boilTime, setBoilTime] = useState('');
-  const addHops = () => {
-    console.log(endVolume, originalGravity, weight, alphaAcid, boilTime);
-  };
+  useEffect(() => {}, []);
+
+  const [counter, setCounter]: [
+    number,
+    Dispatch<SetStateAction<number>>
+  ] = useState(0);
+
+  const [endVolume, setEndVolume] = useState(0);
+  const [originalGravity, setOriginalGravity] = useState(0);
+
+  function hopCards() {
+    let cards = [];
+    for (let i = 0; i <= counter; i++) {
+      cards.push(
+        <HopCard index={i} key={`hop-${i}`} id={`hop-${i}`}></HopCard>
+      );
+    }
+    return cards.map((hop) => hop);
+  }
+
+  function addHop() {
+    setCounter(counter + 1);
+  }
+
+  function removeHop() {
+    if (counter > 0) {
+      setCounter(counter - 1);
+    }
+  }
 
   return (
-    <StyledView>
+    <ScrollView>
       <StyledCard>
-        <Text>Volume Final</Text>
+        <Text>Volume Final - {endVolume}</Text>
         <StyledInput
-          value={endVolume}
-          onChangeText={(text) => setEndVolume(text)}
+          value={`${endVolume}`}
+          onChangeText={(text) =>
+            text ? setEndVolume(parseFloat(text)) : setEndVolume(0)
+          }
           keyboardType={'numeric'}
         ></StyledInput>
-        <Text>Original Gravity(OG)</Text>
+        <Text>Original Gravity(OG) - {originalGravity}</Text>
         <StyledInput
-          value={originalGravity}
-          onChangeText={(text) => setOriginalGravity(text)}
+          value={`${originalGravity}`}
+          onChangeText={(text) =>
+            text ? setOriginalGravity(parseFloat(text)) : setOriginalGravity(0)
+          }
           keyboardType={'numeric'}
         ></StyledInput>
-        <StyledCard>
-          <Title>Lúpulo 1</Title>
-          <Text>Peso</Text>
-          <StyledInput
-            value={weight}
-            onChangeText={(text) => setWeight(text)}
-            keyboardType={'numeric'}
-          ></StyledInput>
-          <Text>Alfa ácido</Text>
-          <StyledInput
-            value={alphaAcid}
-            onChangeText={(text) => setAlphaAcid(text)}
-            keyboardType={'numeric'}
-          ></StyledInput>
-          <Text>Tempo de Fervura(min)</Text>
-          <StyledInput
-            value={boilTime}
-            onChangeText={(text) => setBoilTime(text)}
-            keyboardType={'numeric'}
-          ></StyledInput>
-        </StyledCard>
-        <StyledButton onPress={addHops}>
-          <Text>Add Hops</Text>
+
+        <View>{hopCards()}</View>
+
+        <StyledButton onPress={() => addHop()}>
+          <Text>Add Hop</Text>
+        </StyledButton>
+        <StyledButton onPress={() => removeHop()}>
+          <Text>Remove Hops</Text>
         </StyledButton>
         <StyledButton onPress={() => navigation.navigate('Results')}>
           <Text>Result</Text>
         </StyledButton>
       </StyledCard>
-    </StyledView>
+    </ScrollView>
   );
 }
