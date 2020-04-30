@@ -8,9 +8,17 @@ import {
   Title,
   StyledInput
 } from '../components';
-import { Props } from '../types';
+import {
+  HomeScreenNavigationProp,
+  HomeScreenRouteProp
+} from '../types/navigation';
 
-export function AbvCalculator({ navigation }: Props) {
+type Props = {
+  navigation: HomeScreenNavigationProp;
+  route: HomeScreenRouteProp;
+};
+
+export const AbvCalculator: React.FC<Props> = ({ navigation }) => {
   const pressButton = () => {
     navigation.navigate('Results');
   };
@@ -40,4 +48,4 @@ export function AbvCalculator({ navigation }: Props) {
       </StyledButton>
     </StyledView>
   );
-}
+};

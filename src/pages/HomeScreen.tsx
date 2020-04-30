@@ -8,9 +8,18 @@ import {
   Title,
   StyledInput
 } from '../components';
-import { Props, RootStackParamList } from '../types';
 
-export function HomeScreen({ navigation }: Props) {
+import {
+  HomeScreenNavigationProp,
+  HomeScreenRouteProp
+} from '../types/navigation';
+
+type Props = {
+  navigation: HomeScreenNavigationProp;
+  route: HomeScreenRouteProp;
+};
+
+export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <StyledView>
       <StyledCard>
@@ -23,4 +32,4 @@ export function HomeScreen({ navigation }: Props) {
       </StyledCard>
     </StyledView>
   );
-}
+};

@@ -1,10 +1,14 @@
 import React, { useEffect, useState, SetStateAction, Dispatch } from 'react';
 import { Text, View } from 'react-native';
 import { StyledButton, StyledInput, StyledCard, HopCard } from '../components';
-import { Props } from '../types';
 import { ScrollView } from 'react-native-gesture-handler';
+import { HomeScreenNavigationProp } from '../types/navigation';
 
-export function IbuCalculator({ navigation }: Props) {
+type Props = {
+  navigation: HomeScreenNavigationProp;
+};
+
+export const IbuCalculator: React.FC<Props> = ({ navigation }) => {
   useEffect(() => {}, []);
 
   const [counter, setCounter]: [
@@ -69,4 +73,4 @@ export function IbuCalculator({ navigation }: Props) {
       </StyledCard>
     </ScrollView>
   );
-}
+};
