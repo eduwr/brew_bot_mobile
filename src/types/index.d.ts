@@ -3,7 +3,7 @@ import { RouteProp } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 export * from './HopCardProps';
 
-type RootStackParamList = {
+export type RootStackParamList = {
   Home: undefined;
   AbvCalculator: undefined;
   Results: undefined;
@@ -15,3 +15,12 @@ export type HomeScreenNavigationProp = StackNavigationProp<
   'Home'
 >;
 export type HomeScreenRouteProp = RouteProp<RootStackParamList, 'Home'>;
+
+export interface HopInterface {
+  weight: number;
+  alphaAcid: number;
+  boilTime: number;
+}
+
+export type AddHop = (hop: HopInterface) => void;
+export type RemoveHop = (hop: HopInterface) => void;

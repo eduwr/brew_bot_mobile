@@ -1,76 +1,71 @@
-import React, { useEffect, useState, SetStateAction, Dispatch } from 'react';
-import { Text, View } from 'react-native';
-import { StyledButton, StyledInput, StyledCard, HopCard } from '../components';
+import React, { useState } from 'react';
+import { HomeScreenNavigationProp } from '../types';
+import { Text } from 'react-native';
+import { StyledView } from '../components/StyledComponents/View/index';
+
+import { HopInterface } from '../types';
+import { StyledCard, HopList, AddHopForm } from '../components';
 import { ScrollView } from 'react-native-gesture-handler';
-import { HomeScreenNavigationProp } from '../types/navigation';
+import { AddHop, RemoveHop } from '../types/index';
 
 type Props = {
   navigation: HomeScreenNavigationProp;
 };
 
+const Hops: HopInterface[] = [];
+
 export const IbuCalculator: React.FC<Props> = ({ navigation }) => {
-  useEffect(() => {}, []);
+  const [hops, setHops] = useState(Hops);
+  const [addHopMode, setAddHopMode] = useState(false);
 
-  const [counter, setCounter]: [
-    number,
-    Dispatch<SetStateAction<number>>
-  ] = useState(0);
+  const addHop: AddHop = (newHop: HopInterface) => {
+    setHops([...hops, newHop]);
+  };
 
-  const [endVolume, setEndVolume] = useState(0);
-  const [originalGravity, setOriginalGravity] = useState(0);
+  const removeHop: RemoveHop = (currentHop) => {
+    const newHopList = hops.filter((hop) => hop !== currentHop);
+    setHops(newHopList);
+  };
 
-  function hopCards() {
-    let cards = [];
-    for (let i = 0; i <= counter; i++) {
-      cards.push(
-        <HopCard index={i} key={`hop-${i}`} id={`hop-${i}`}></HopCard>
+  const toggleMode = (): void => {
+    setAddHopMode(!addHopMode);
+  };
+
+  const renderResultOrHopForm = (): JSX.Element => {
+    if (addHopMode) {
+      return (
+        <StyledCard>
+          <AddHopForm addHop={addHop} toggleMode={toggleMode}></AddHopForm>
+        </StyledCard>
       );
     }
-    return cards.map((hop) => hop);
-  }
-
-  function addHop() {
-    setCounter(counter + 1);
-  }
-
-  function removeHop() {
-    if (counter > 0) {
-      setCounter(counter - 1);
-    }
-  }
+    return (
+      <StyledCard>
+        <Text>Resultado</Text>
+        <Text>IBU: 85</Text>
+      </StyledCard>
+    );
+  };
 
   return (
     <ScrollView>
-      <StyledCard>
-        <Text>Volume Final - {endVolume}</Text>
-        <StyledInput
-          value={`${endVolume}`}
-          onChangeText={(text) =>
-            text ? setEndVolume(parseFloat(text)) : setEndVolume(0)
-          }
-          keyboardType={'numeric'}
-        ></StyledInput>
-        <Text>Original Gravity(OG) - {originalGravity}</Text>
-        <StyledInput
-          value={`${originalGravity}`}
-          onChangeText={(text) =>
-            text ? setOriginalGravity(parseFloat(text)) : setOriginalGravity(0)
-          }
-          keyboardType={'numeric'}
-        ></StyledInput>
+      <StyledView>
+        <StyledCard>
+          <Text>Parâmetros Iniciais</Text>
+          <Text>Volume Final (L)</Text>
+          <Text>Densidade Inicial (OG)</Text>
+        </StyledCard>
 
-        <View>{hopCards()}</View>
+        <StyledCard>
+          <HopList
+            removeHop={removeHop}
+            hops={hops}
+            toggleMode={toggleMode}
+          ></HopList>
+        </StyledCard>
 
-        <StyledButton onPress={() => addHop()}>
-          <Text>Add Hop</Text>
-        </StyledButton>
-        <StyledButton onPress={() => removeHop()}>
-          <Text>Remove Hops</Text>
-        </StyledButton>
-        <StyledButton onPress={() => navigation.navigate('Results')}>
-          <Text>Result</Text>
-        </StyledButton>
-      </StyledCard>
+        {renderResultOrHopForm()}
+      </StyledView>
     </ScrollView>
   );
 };

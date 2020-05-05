@@ -11,7 +11,7 @@ import {
 import {
   HomeScreenNavigationProp,
   HomeScreenRouteProp
-} from '../types/navigation';
+} from '../types';
 
 type Props = {
   navigation: HomeScreenNavigationProp;

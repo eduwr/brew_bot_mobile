@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import { RootStackParamList } from '../types';
+
 import {
   HomeScreen,
   ResultScreen,
@@ -12,7 +13,7 @@ import {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export function Router() {
+export const Router: React.FC = (): JSX.Element => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
@@ -35,4 +36,4 @@ export function Router() {
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
