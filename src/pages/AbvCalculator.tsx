@@ -1,5 +1,6 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Text } from 'react-native';
+import { AbvCalculatorService } from '../services/AbvCalculatorService';
 import {
   StyledButton,
   StyledView,
@@ -10,7 +11,8 @@ import {
 } from '../components';
 import {
   HomeScreenNavigationProp,
-  HomeScreenRouteProp
+  HomeScreenRouteProp,
+  Density
 } from '../types';
 
 type Props = {
@@ -19,33 +21,58 @@ type Props = {
 };
 
 export const AbvCalculator: React.FC<Props> = ({ navigation }) => {
-  const pressButton = () => {
-    navigation.navigate('Results');
-  };
+  const [originalGravity, setOriginalGravity] = useState('');
+  const [originalTemperature, setOriginalTemperature] = useState('');
+
+  const [finalGravity, setFinalGravity] = useState('');
+  const [finalTemperature, setFinalTemperature] = useState('');
 
   return (
     <StyledView>
       <StyledCard>
         <Title>Densidade Original</Title>
         <Text>Leitura do densímetro</Text>
-        <StyledInput></StyledInput>
+        <StyledInput
+          keyboardType="numeric"
+          value={originalGravity}
+          onChangeText={(text) => setOriginalGravity(text)}
+          placeholder="1.05"
+        ></StyledInput>
         <Text>Temperatura</Text>
-        <StyledInput></StyledInput>
-        <Text>Densidade Corrigida</Text>
-        <StyledInput></StyledInput>
+        <StyledInput
+          keyboardType="numeric"
+          value={originalTemperature}
+          onChangeText={(text) => setOriginalTemperature(text)}
+          placeholder="20 °C"
+        ></StyledInput>
+        <Text>
+          Densidade Corrigida:
+          {originalGravity + originalTemperature}
+        </Text>
       </StyledCard>
       <StyledCard>
         <Title>Densidade Final</Title>
         <Text>Leitura do densímetro</Text>
-        <StyledInput></StyledInput>
+        <StyledInput
+          keyboardType="numeric"
+          value={finalGravity}
+          onChangeText={(text) => setFinalGravity(text)}
+          placeholder="1.05"
+        ></StyledInput>
         <Text>Temperatura</Text>
-        <StyledInput></StyledInput>
-        <Text>Densidade Corrigida</Text>
-        <StyledInput></StyledInput>
+        <StyledInput
+          keyboardType="numeric"
+          value={finalTemperature}
+          onChangeText={(text) => setFinalTemperature(text)}
+          placeholder="20 °C"
+        ></StyledInput>
+        <Text>Densidade Corrigida: {finalGravity + finalTemperature}</Text>
       </StyledCard>
-      <StyledButton onPress={pressButton}>
-        <StyledText>Calular ABV</StyledText>
-      </StyledButton>
+      <StyledCard>
+        <Text>
+          Resultado: {AbvCalculatorService(originalGravity, finalGravity)}
+        </Text>
+      </StyledCard>
     </StyledView>
   );
 };

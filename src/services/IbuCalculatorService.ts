@@ -10,7 +10,7 @@ export const IbuCalculatorService = (
     return funcOfGravity * funcOfTime;
   };
 
-  const correctionFactor = (gravity: string) =>
+  const correctionFactor = (gravity: string): number =>
     Number(gravity) >= 1.05 ? 1 + (Number(gravity) - 1.05) / 2 : 1;
 
   const U = hopUtilizationParam(conditions.originalGravity, hop.boilTime);
@@ -21,7 +21,7 @@ export const IbuCalculatorService = (
 
   const result = (U * P * A) / (V * C);
 
-  return result.toString();
+  return result.toFixed(2).toString();
 
   /*
 References:

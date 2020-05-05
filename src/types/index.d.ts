@@ -27,5 +27,10 @@ export interface ibuConditions {
   private originalGravity: string;
 }
 
+export interface Density {
+  density: string;
+  temperature: string;
+}
+
 export type AddHop = (hop: HopInterface) => void;
 export type RemoveHop = (hop: HopInterface) => void;

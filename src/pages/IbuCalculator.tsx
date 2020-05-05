@@ -5,7 +5,7 @@ import { StyledView } from '../components/StyledComponents/View/index';
 
 import { StyledCard, HopList, AddHopForm } from '../components';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import { AddHop, RemoveHop, HopInterface, ibuConditions } from '../types';
+import { AddHop, RemoveHop, HopInterface } from '../types';
 import { IbuCalculatorService } from '../services/IbuCalculatorService';
 
 type Props = {
