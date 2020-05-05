@@ -2,16 +2,23 @@ import React, { useState } from 'react';
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { Text } from 'react-native';
 import { AddHop } from '../../types';
+import { IbuCalculatorService } from '../../services';
+import { ibuConditions, HopInterface } from '../../types/index';
 
 interface Props {
   addHop: AddHop;
   toggleMode: () => void;
+  conditions: ibuConditions;
 }
 
-export const AddHopForm: React.FC<Props> = ({ addHop, toggleMode }) => {
-  const [weight, setWeight] = useState(0);
-  const [alphaAcid, setAlphaAcid] = useState(0);
-  const [boilTime, setBoilTime] = useState(0);
+export const AddHopForm: React.FC<Props> = ({
+  addHop,
+  toggleMode,
+  conditions
+}) => {
+  const [weight, setWeight] = useState('');
+  const [alphaAcid, setAlphaAcid] = useState('');
+  const [boilTime, setBoilTime] = useState('');
 
   return (
     <>
@@ -21,7 +28,9 @@ export const AddHopForm: React.FC<Props> = ({ addHop, toggleMode }) => {
         placeholder="Peso (g)"
         placeholderTextColor="#999"
         value={`${weight}`}
-        onChangeText={(text) => setWeight(parseFloat(text))}
+        onChangeText={(text) => {
+          setWeight(text);
+        }}
       ></TextInput>
       <Text>Alfa Ácido</Text>
 
@@ -30,7 +39,9 @@ export const AddHopForm: React.FC<Props> = ({ addHop, toggleMode }) => {
         placeholder="Alfa Ácido (%)"
         placeholderTextColor="#999"
         value={`${alphaAcid}`}
-        onChangeText={(text) => setAlphaAcid(parseFloat(text))}
+        onChangeText={(text) => {
+          setAlphaAcid(text);
+        }}
       ></TextInput>
       <Text>Tempo de Fervura</Text>
 
@@ -39,15 +50,22 @@ export const AddHopForm: React.FC<Props> = ({ addHop, toggleMode }) => {
         placeholder="Tempo de fervura (min)"
         placeholderTextColor="#999"
         value={`${boilTime}`}
-        onChangeText={(text) => setBoilTime(parseInt(text))}
+        onChangeText={(text) => {
+          setBoilTime(text);
+        }}
       ></TextInput>
+
+      <Text>
+        IBU contribution:{' '}
+        {IbuCalculatorService(conditions, { weight, alphaAcid, boilTime })}
+      </Text>
 
       <TouchableOpacity
         onPress={(e) => {
           addHop({ weight, alphaAcid, boilTime });
-          setWeight(0);
-          setAlphaAcid(0);
-          setBoilTime(0);
+          setWeight('');
+          setAlphaAcid('');
+          setBoilTime('');
           toggleMode();
         }}
       >

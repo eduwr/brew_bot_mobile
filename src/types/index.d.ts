@@ -17,9 +17,14 @@ export type HomeScreenNavigationProp = StackNavigationProp<
 export type HomeScreenRouteProp = RouteProp<RootStackParamList, 'Home'>;
 
 export interface HopInterface {
-  weight: number;
-  alphaAcid: number;
-  boilTime: number;
+  weight: string;
+  alphaAcid: string;
+  boilTime: string;
+}
+
+export interface ibuConditions {
+  private endVolume: string;
+  private originalGravity: string;
 }
 
 export type AddHop = (hop: HopInterface) => void;
