@@ -9,10 +9,7 @@ import {
   StyledInput
 } from '../components';
 
-import {
-  HomeScreenNavigationProp,
-  HomeScreenRouteProp
-} from '../types';
+import { HomeScreenNavigationProp, HomeScreenRouteProp } from '../types';
 
 type Props = {
   navigation: HomeScreenNavigationProp;
