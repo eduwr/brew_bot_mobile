@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HomeScreenNavigationProp } from '../types';
-import { Text } from 'react-native';
-import { StyledView } from '../components/StyledComponents/View/index';
+import { Animated, StyleSheet, Easing } from 'react-native';
 
-import { StyledCard, HopList, AddHopForm } from '../components';
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import {
+  HopList,
+  AddHopForm,
+  Header,
+  ScrollContainer,
+  Box,
+  StyledText,
+  StyledView,
+  TextInputWrapper,
+  InitialParamsForm
+} from '../components';
+
 import { AddHop, RemoveHop, HopInterface } from '../types';
 import { IbuCalculatorService } from '../services/IbuCalculatorService';
+import HeaderImage from '../assets/HeaderImage.svg';
 
 type Props = {
   navigation: HomeScreenNavigationProp;
@@ -16,32 +26,9 @@ const Hops: HopInterface[] = [];
 
 export const IbuCalculator: React.FC<Props> = ({ navigation }) => {
   const [hops, setHops] = useState(Hops);
-  const [addHopMode, setAddHopMode] = useState(false);
+  const [addHopMode, setAddHopMode] = useState(true);
   const [endVolume, setEndVolume] = useState('');
   const [originalGravity, setOriginalGravity] = useState('');
-
-  const initialParamsForm = () => {
-    return (
-      <>
-        <Text>Volume Final</Text>
-        <TextInput
-          value={endVolume}
-          onChangeText={(text) => setEndVolume(text)}
-          keyboardType="numeric"
-          placeholder="Insira o volume final..."
-          placeholderTextColor="#AAA"
-        ></TextInput>
-        <Text>Densidade Inicial (OG)</Text>
-        <TextInput
-          value={originalGravity}
-          onChangeText={(text) => setOriginalGravity(text)}
-          keyboardType="numeric"
-          placeholder="Insira a densidade inicial..."
-          placeholderTextColor="#AAA"
-        ></TextInput>
-      </>
-    );
-  };
 
   const addHop: AddHop = (newHop: HopInterface) => {
     setHops([...hops, newHop]);
@@ -56,9 +43,9 @@ export const IbuCalculator: React.FC<Props> = ({ navigation }) => {
     setAddHopMode(!addHopMode);
   };
 
-  const ibuReducer = (arr: HopInterface[]): number => {
+  const ibuReducer = (arr: HopInterface[]): string => {
     if (arr.length === 0) {
-      return 0;
+      return '0';
     }
 
     const ibuArr = arr.map((element) => {
@@ -67,50 +54,107 @@ export const IbuCalculator: React.FC<Props> = ({ navigation }) => {
       );
     });
 
-    return ibuArr.reduce((previous, current) => (previous += current));
+    const totalIbu = ibuArr.reduce(
+      (previous, current) => (previous += current)
+    );
+
+    return totalIbu.toFixed(2);
   };
 
-  const renderResultOrHopForm = (): JSX.Element => {
+  const renderAddHopForm = (): JSX.Element | void => {
     if (addHopMode) {
       return (
-        <StyledCard>
-          <AddHopForm
-            conditions={{ endVolume, originalGravity }}
-            addHop={addHop}
-            toggleMode={toggleMode}
-          ></AddHopForm>
-        </StyledCard>
+        <AddHopForm
+          conditions={{ endVolume, originalGravity }}
+          addHop={addHop}
+          toggleMode={toggleMode}
+        ></AddHopForm>
       );
     }
-    return (
-      <StyledCard>
-        <Text>Resultado</Text>
-        <Text>IBU: {ibuReducer(hops)}</Text>
-      </StyledCard>
-    );
   };
 
+  const animationValue = new Animated.Value(0);
+  const textAnimationValue = new Animated.Value(0);
+
+  useEffect(() => {
+    animationValue.setValue(0);
+    textAnimationValue.setValue(0);
+    Animated.parallel([
+      Animated.timing(animationValue, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.elastic(1)
+      }),
+      Animated.timing(textAnimationValue, {
+        toValue: 1,
+        duration: 1000,
+        delay: 900,
+        easing: Easing.linear
+      })
+    ]).start();
+  }, []);
+
+  const widthAnimation = animationValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0%', '80%']
+  });
+
   return (
-    <ScrollView>
-      <StyledView>
-        <StyledCard>
-          {initialParamsForm()}
-          <Text>Parâmetros Iniciais</Text>
-          <Text>Volume Final {endVolume} (L) </Text>
-          <Text>Densidade Inicial {originalGravity} (OG)</Text>
-        </StyledCard>
+    <ScrollContainer>
+      <Header>
+        <HeaderImage style={styles.svg}></HeaderImage>
+      </Header>
 
-        <StyledCard>
-          <HopList
-            removeHop={removeHop}
-            hops={hops}
-            toggleMode={toggleMode}
-            conditions={{ endVolume, originalGravity }}
-          ></HopList>
-        </StyledCard>
-
-        {renderResultOrHopForm()}
+      <StyledView align="flex-end" marginBottom={15}>
+        <InitialParamsForm
+          endVolume={endVolume}
+          setEndVolume={setEndVolume}
+          originalGravity={originalGravity}
+          setOriginalGravity={setOriginalGravity}
+        />
       </StyledView>
-    </ScrollView>
+      <StyledView align="flex-start" background="#5b6239">
+        <HopList
+          removeHop={removeHop}
+          hops={hops}
+          toggleMode={toggleMode}
+          addHopMode={addHopMode}
+          conditions={{ endVolume, originalGravity }}
+        ></HopList>
+        {renderAddHopForm()}
+      </StyledView>
+      <StyledView align="flex-end">
+        <Animated.View
+          style={{ flexDirection: 'row-reverse', width: widthAnimation }}
+        >
+          <Box
+            style={{ flexDirection: 'row-reverse' }}
+            height={80}
+            justify="space-around"
+          >
+            <Animated.View
+              style={{
+                opacity: textAnimationValue,
+                flexDirection: 'row-reverse',
+                justifyContent: 'space-between'
+              }}
+            >
+              <TextInputWrapper>
+                <StyledText size="big" color="white">
+                  {ibuReducer(hops)}
+                </StyledText>
+              </TextInputWrapper>
+              <StyledText size="big">IBU Total: </StyledText>
+            </Animated.View>
+          </Box>
+        </Animated.View>
+      </StyledView>
+    </ScrollContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  svg: {
+    flex: 1
+  }
+});

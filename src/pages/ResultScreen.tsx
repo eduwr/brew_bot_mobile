@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text } from 'react-native';
-import { Props } from '../types';
+// import { Props } from '../types';
 import {
   StyledButton,
   StyledView,
@@ -10,7 +10,7 @@ import {
   StyledInput
 } from '../components';
 
-export function ResultScreen(props: Props) {
+export function ResultScreen() {
   return (
     <StyledView>
       <StyledCard>

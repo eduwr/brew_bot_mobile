@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Text } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import {
-  StyledButton,
-  StyledView,
-  StyledText,
-  StyledCard,
-  Title,
-  StyledInput
+  SwipableButton,
+  Container,
+  Header,
+  ButtonText,
+  ButtonView
 } from '../components';
 
 import { HomeScreenNavigationProp, HomeScreenRouteProp } from '../types';
+
+import HeaderImage from '../assets/HeaderImage.svg';
 
 type Props = {
   navigation: HomeScreenNavigationProp;
@@ -18,15 +19,24 @@ type Props = {
 
 export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
-    <StyledView>
-      <StyledCard>
-        <StyledButton onPress={() => navigation.navigate('AbvCalculator')}>
-          <StyledText>Caluladora de ABV</StyledText>
-        </StyledButton>
-        <StyledButton onPress={() => navigation.navigate('IbuCalculator')}>
-          <StyledText>Calculadora de IBU</StyledText>
-        </StyledButton>
-      </StyledCard>
-    </StyledView>
+    <Container>
+      <Header>
+        <HeaderImage style={styles.svg}></HeaderImage>
+      </Header>
+      <ButtonView>
+        <SwipableButton onPress={() => navigation.navigate('AbvCalculator')}>
+          <ButtonText>Calculadora de ABV</ButtonText>
+        </SwipableButton>
+        <SwipableButton onPress={() => navigation.navigate('IbuCalculator')}>
+          <ButtonText>Calculadora de IBU</ButtonText>
+        </SwipableButton>
+      </ButtonView>
+    </Container>
   );
 };
+
+const styles = StyleSheet.create({
+  svg: {
+    flex: 1
+  }
+});

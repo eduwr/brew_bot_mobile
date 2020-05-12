@@ -1,5 +1,4 @@
-export * from './Button';
+export * from './Touchable';
 export * from './View';
 export * from './Text';
-export * from './Card';
-export * from './Input';
+export * from './TextInput';

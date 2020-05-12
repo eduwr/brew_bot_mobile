@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  createStackNavigator,
+  StackNavigationOptions
+} from '@react-navigation/stack';
 
 import { RootStackParamList } from '../types';
 
@@ -14,23 +17,36 @@ import {
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const Router: React.FC = (): JSX.Element => {
+  const stackNavigationOptions = (title: string): StackNavigationOptions => {
+    return {
+      title,
+      headerStyle: {
+        backgroundColor: '#1b1f1b'
+      },
+      headerTintColor: 'rgba(248, 249, 251, 0.8)',
+      headerTitleStyle: {
+        fontWeight: 'bold'
+      }
+    };
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ title: 'BrewBot' }}
+          options={stackNavigationOptions('Home')}
         />
         <Stack.Screen
           name="AbvCalculator"
           component={AbvCalculator}
-          options={{ title: 'Calcular ABV(%)' }}
+          options={stackNavigationOptions('Calcular ABV')}
         />
         <Stack.Screen
           name="IbuCalculator"
           component={IbuCalculator}
-          options={{ title: 'Calcular Ibu' }}
+          options={stackNavigationOptions('Calcular IBU')}
         />
         <Stack.Screen name="Results" component={ResultScreen} />
       </Stack.Navigator>
