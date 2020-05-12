@@ -1,11 +1,6 @@
 import React, { useEffect } from 'react';
 import { Animated, Easing } from 'react-native';
-import {
-  StyledText,
-  TextInputWrapper,
-  StyledInput,
-  Box
-} from './StyledComponents';
+import { StyledText, StyledView, StyledInput, Box } from './StyledComponents';
 
 interface Param {
   endVolume: string;
@@ -50,7 +45,7 @@ export const InitialParamsForm: React.FC<Param> = ({
   });
 
   return (
-    <>
+    <StyledView align="flex-end" marginBottom={15}>
       <Animated.View
         style={{ width: smallerWidthSize, flexDirection: 'row-reverse' }}
       >
@@ -85,6 +80,6 @@ export const InitialParamsForm: React.FC<Param> = ({
           </Animated.View>
         </Box>
       </Animated.View>
-    </>
+    </StyledView>
   );
 };

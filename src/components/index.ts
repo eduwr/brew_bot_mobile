@@ -3,3 +3,4 @@ export * from './Hop';
 export * from './HopList';
 export * from './AddHopForm';
 export * from './InitialParamsForm';
+export * from './ResultView';

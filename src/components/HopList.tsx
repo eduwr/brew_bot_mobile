@@ -1,7 +1,6 @@
 import React from 'react';
 import { HopInterface } from '../types';
 import { Hop } from './Hop';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { RemoveHop, ibuConditions } from '../types/index';
 
 import {
@@ -9,7 +8,7 @@ import {
   StyledText,
   HopListTitleWrapper,
   TextWrapper,
-  Wrapper
+  StyledView
 } from './StyledComponents';
 
 import AddHopButton from '../assets/PlusButton.svg';
@@ -30,7 +29,7 @@ export const HopList: React.FC<Param> = ({
   addHopMode
 }): JSX.Element => {
   return (
-    <>
+    <StyledView align="flex-start" background="#5b6239">
       <HopListTitleWrapper>
         <TextWrapper>
           <StyledText color="white" size="big">
@@ -52,6 +51,6 @@ export const HopList: React.FC<Param> = ({
           addHopMode={addHopMode}
         />
       ))}
-    </>
+    </StyledView>
   );
 };
