@@ -7,7 +7,7 @@ import {
   AddHopForm,
   Header,
   ScrollContainer,
-  InitialParamsForm,
+  InitialParamsIbu,
   ResultView
 } from '../components';
 
@@ -57,7 +57,7 @@ export const IbuCalculator: React.FC<Props> = ({ navigation }) => {
         <HeaderImage style={styles.svg}></HeaderImage>
       </Header>
 
-      <InitialParamsForm
+      <InitialParamsIbu
         endVolume={endVolume}
         setEndVolume={setEndVolume}
         originalGravity={originalGravity}

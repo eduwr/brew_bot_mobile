@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
-import { Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { AbvCalculatorService } from '../services/AbvCalculatorService';
 import {
-  StyledButton,
   StyledView,
-  StyledText,
   StyledCard,
   Title,
-  StyledInput
+  StyledInput,
+  Header,
+  InitialParamsAbv,
+  ScrollContainer
 } from '../components';
-import {
-  HomeScreenNavigationProp,
-  HomeScreenRouteProp,
-  Density
-} from '../types';
+import { HomeScreenNavigationProp, HomeScreenRouteProp } from '../types';
+
+import HeaderImage from '../assets/HeaderImage.svg';
 
 type Props = {
   navigation: HomeScreenNavigationProp;
@@ -22,13 +21,25 @@ type Props = {
 
 export const AbvCalculator: React.FC<Props> = ({ navigation }) => {
   const [originalGravity, setOriginalGravity] = useState('');
-  const [originalTemperature, setOriginalTemperature] = useState('');
+  const [initialTemperature, setInitialTemperature] = useState('');
 
   const [finalGravity, setFinalGravity] = useState('');
   const [finalTemperature, setFinalTemperature] = useState('');
 
   return (
-    <StyledView>
+    <ScrollContainer>
+      <Header>
+        <HeaderImage style={styles.svg}></HeaderImage>
+      </Header>
+
+      <InitialParamsAbv
+        originalGravity={originalGravity}
+        initialTemperature={initialTemperature}
+        setInitialTemperature={setInitialTemperature}
+        setOriginalGravity={setOriginalGravity}
+      ></InitialParamsAbv>
+
+      {/* 
       <StyledCard>
         <Title>Densidade Original</Title>
         <Text>Leitura do densímetro</Text>
@@ -41,15 +52,15 @@ export const AbvCalculator: React.FC<Props> = ({ navigation }) => {
         <Text>Temperatura</Text>
         <StyledInput
           keyboardType="numeric"
-          value={originalTemperature}
-          onChangeText={(text) => setOriginalTemperature(text)}
+          value={initialtemperature}
+          onChangeText={(text) => setInitialTemperature(text)}
           placeholder="20 °C"
         ></StyledInput>
         <Text>
           Densidade Corrigida:
-          {originalGravity + originalTemperature}
+          {originalGravity + initialtemperature}
         </Text>
-      </StyledCard>
+</StyledCard> */}
       <StyledCard>
         <Title>Densidade Final</Title>
         <Text>Leitura do densímetro</Text>
@@ -73,6 +84,12 @@ export const AbvCalculator: React.FC<Props> = ({ navigation }) => {
           Resultado: {AbvCalculatorService(originalGravity, finalGravity)}
         </Text>
       </StyledCard>
-    </StyledView>
+    </ScrollContainer>
   );
 };
+
+const styles = StyleSheet.create({
+  svg: {
+    flex: 1
+  }
+});

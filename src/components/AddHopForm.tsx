@@ -49,7 +49,7 @@ export const AddHopForm: React.FC<Props> = ({
   });
 
   return (
-    <Animated.View style={{ width: showUp }}>
+    <Animated.View style={{ width: showUp, backgroundColor: '#5b6239' }}>
       <LeftBox>
         <Animated.View
           style={{

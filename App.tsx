@@ -1,12 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 
 import { Router } from './src/routes';
-import { StatusBar } from 'react-native';
+import { StatusBar, Platform } from 'react-native';
 
 export default function App() {
   return (
     <>
-      <StatusBar barStyle="light-content" backgroundColor="#0c0d0c" />
+      {Platform.OS === 'ios' && (
+        <StatusBar barStyle="light-content" backgroundColor="#0c0d0c" />
+      )}
+
       <Router />
     </>
   );
