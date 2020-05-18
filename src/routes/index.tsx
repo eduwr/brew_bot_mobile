@@ -48,7 +48,6 @@ export const Router: React.FC = (): JSX.Element => {
           component={IbuCalculator}
           options={stackNavigationOptions('Calcular IBU')}
         />
-        <Stack.Screen name="Results" component={ResultScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
